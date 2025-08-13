@@ -1,0 +1,35 @@
+package lu.kolja.expandedae;
+
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
+
+@Mod.EventBusSubscriber(modid = Expandedae.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+public class ExpConfig {
+    private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+
+    private static final ForgeConfigSpec.IntValue MAX_CONTROLLER_SIZE = BUILDER
+            .comment("The maximum allowed size of an ME controller.",
+                    "Even tho it is minimal, as you increase this value, the controller will take longer to form.",
+                    "Note: Controllers surrounded by more than 3 others in one axis, will remain gray but do still function normally.",
+                    "Default value: 7")
+            .defineInRange("maxControllerSize", 7, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.BooleanValue IGNORE_CONTROLLER_RULES = BUILDER
+            .comment("Ignore controller forming rules.",
+                    "Allows you to make any shape you wish without the controller turning red.",
+                    "Default value: false")
+            .define("ignoreControllerRules", false);
+
+    static final ForgeConfigSpec SPEC = BUILDER.build();
+
+    public static int maxControllerSize;
+    public static boolean ignoreControllerRules;
+
+    @SubscribeEvent
+    static void onLoad(final ModConfigEvent event) {
+        maxControllerSize = MAX_CONTROLLER_SIZE.get();
+        ignoreControllerRules = IGNORE_CONTROLLER_RULES.get();
+    }
+}

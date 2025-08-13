@@ -15,6 +15,7 @@
     "cpu.MixinCPUSelectionList",
     "cpu.MixinCraftingCPUCluster",
     "emi.MixinEmiScreenBase",
+    "misc.MixinControllerValidator",
     "misc.MixinMathExpressionParser",
     "misc.MixinSettings",
     "misc.MixinStyleManager",

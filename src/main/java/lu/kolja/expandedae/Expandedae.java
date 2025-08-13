@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
@@ -56,6 +57,7 @@ public class Expandedae {
         if (FMLEnvironment.dist.isClient()) {
             modEventBus.register(ExpandedaeClient.INSTANCE);
         }
+        context.registerConfig(ModConfig.Type.COMMON, ExpConfig.SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
