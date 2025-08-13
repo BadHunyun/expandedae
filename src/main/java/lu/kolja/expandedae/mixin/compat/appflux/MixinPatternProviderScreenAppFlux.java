@@ -30,7 +30,7 @@ public abstract class MixinPatternProviderScreenAppFlux<C extends PatternProvide
     }
 
     @Inject(
-            method = "Lappeng/client/gui/implementations/PatternProviderScreen;<init>(Lappeng/menu/implementations/PatternProviderMenu;Lnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/network/chat/Component;Lappeng/client/gui/style/ScreenStyle;)V",
+            method = "<init>(Lappeng/menu/implementations/PatternProviderMenu;Lnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/network/chat/Component;Lappeng/client/gui/style/ScreenStyle;)V",
             at = @At("TAIL"),
             remap = false
     )

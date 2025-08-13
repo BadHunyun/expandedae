@@ -6,6 +6,9 @@
   "plugin": "lu.kolja.expandedae.mixin.MixinPlugin",
   "refmap": "mixins.expandedae.refmap.json",
   "mixins": [
+    "accessor.AccessorCraftingCpuLogic",
+    "accessor.AccessorExecutingCraftingJob",
+    "accessor.AccessorExecutingCraftingJob$AccessorTaskProgress",
     "accessor.AccessorIOPortBlockEntity",
     "compat.appflux.MixinPatternProviderLogicAppFlux",
     "compat.appflux.MixinPatternProviderMenuAppFlux",
