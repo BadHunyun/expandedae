@@ -9,9 +9,6 @@
     "accessor.AccessorIOPortBlockEntity",
     "compat.appflux.MixinPatternProviderLogicAppFlux",
     "compat.appflux.MixinPatternProviderMenuAppFlux",
-    "compat.cosmic.MixinPatternEncodingTerminalMenuCosm",
-    "compat.cosmic.MixinPatternProviderLogicCosm",
-    "compat.cosmic.MixinPatternProviderMenuCosm",
     "cpu.MixinCPUSelectionList",
     "cpu.MixinCraftingCPUCluster",
     "emi.MixinEmiScreenBase",
@@ -27,7 +24,6 @@
   "client": [
     "accessor.AccessorBuiltInModelHooks",
     "compat.appflux.MixinPatternProviderScreenAppFlux",
-    "compat.cosmic.MixinPatternProviderScreenCosm",
     "cpu.MixinCraftConfirmScreen",
     "cpu.MixinModelBakery",
     "misc.MixinSettingToggleButton",

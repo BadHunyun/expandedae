@@ -19,32 +19,17 @@ public class MixinPlugin implements IMixinConfigPlugin {
      * If mod(s) b is loaded, don't load class A
      */
     public static final Object2ObjectMap<String, List<String>> mixinMap = new Object2ObjectOpenHashMap<>(
-        new String[]{"lu.kolja.expandedae.mixin.terminal.MixinProcessingEncodingPanel",
-                "lu.kolja.expandedae.mixin.misc.MixinSettings",
-                "lu.kolja.expandedae.mixin.misc.MixinSettingToggleButton",
+        new String[]{
                 "lu.kolja.expandedae.mixin.patternprovider.MixinPatternProviderMenu",
                 "lu.kolja.expandedae.mixin.patternprovider.MixinPatternProviderLogic",
                 "lu.kolja.expandedae.mixin.patternprovider.MixinPatternProviderScreen",
-                "lu.kolja.expandedae.mixin.terminal.MixinPatternEncodingTerminalMenu",
-                "lu.kolja.expandedae.mixin.misc.MixinStyleManager",
-                "lu.kolja.expandedae.mixin.misc.MixinMathExpressionParser",
-                "lu.kolja.expandedae.mixin.patternprovider.MixinPatternProviderLogicHost",
-                "lu.kolja.expandedae.mixin.cpu.MixinCPUSelectionList",
-                "lu.kolja.expandedae.mixin.cpu.MixinCraftConfirmScreen",
+                "lu.kolja.expandedae.mixin.patternprovider.MixinPatternProviderLogicHost"
         },
         new List[]{
-                List.of("cosmiccore"),
-                List.of("cosmiccore"),
-                List.of("cosmiccore"),
-                List.of("cosmiccore", "appflux"),
-                List.of("cosmiccore", "appflux"),
-                List.of("cosmiccore", "appflux"),
-                List.of("cosmiccore"),
-                List.of("cosmiccore"),
-                List.of("cosmiccore"),
                 List.of("appflux"),
-                List.of("cosmiccore"),
-                List.of("cosmiccore"),
+                List.of("appflux"),
+                List.of("appflux"),
+                List.of("appflux")
         }
     );
 
@@ -52,16 +37,13 @@ public class MixinPlugin implements IMixinConfigPlugin {
      * If mod b is loaded, do load class A
      */
     public static final Object2ObjectMap<String, String> mixinMap2 = new Object2ObjectOpenHashMap<>(
-            new String[]{"lu.kolja.expandedae.mixin.compat.cosmic.MixinPatternProviderMenuCosm",
-                    "lu.kolja.expandedae.mixin.compat.cosmic.MixinPatternProviderLogicCosm",
-                    "lu.kolja.expandedae.mixin.compat.cosmic.MixinPatternProviderScreenCosm",
-                    "lu.kolja.expandedae.mixin.compat.cosmic.MixinPatternEncodingTerminalMenuCosm",
+            new String[]{
                     "lu.kolja.expandedae.mixin.compat.appflux.MixinPatternProviderLogicAppFlux",
                     "lu.kolja.expandedae.mixin.compat.appflux.MixinPatternProviderMenuAppFlux",
                     "lu.kolja.expandedae.mixin.compat.appflux.MixinPatternProviderScreenAppFlux",
                     "lu.kolja.expandedae.mixin.emi.MixinEmiScreenBase"
             },
-            new String[]{"cosmiccore", "cosmiccore", "cosmiccore", "cosmiccore",
+            new String[]{
                     "appflux", "appflux", "appflux",
                     "emi"
             }
@@ -97,15 +79,11 @@ public class MixinPlugin implements IMixinConfigPlugin {
      */
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        val className = mixinClassName;
-
         if (mixinMap.containsKey(mixinClassName)) {
-            boolean ret = !mixinMap.get(mixinClassName).stream().anyMatch(this::isModLoaded);
-            return ret;
+            return mixinMap.get(mixinClassName).stream().noneMatch(this::isModLoaded);
         }
         if (mixinMap2.containsKey(mixinClassName)) {
-            boolean ret = isModLoaded(mixinMap2.get(mixinClassName));
-            return ret;
+            return isModLoaded(mixinMap2.get(mixinClassName));
         }
         return true;
     }
