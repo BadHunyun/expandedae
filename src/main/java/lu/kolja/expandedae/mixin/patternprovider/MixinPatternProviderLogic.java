@@ -293,7 +293,10 @@ public abstract class MixinPatternProviderLogic implements IUpgradeableObject, I
         getGrid().getCraftingService().getCpus().stream()
                 .filter(ICraftingCPU::isBusy)
                 .map(cpu -> (CraftingCPUCluster) cpu)
-                .filter(cluster -> ((AccessorExecutingCraftingJob) ((AccessorCraftingCpuLogic) cluster.craftingLogic).getJob()).getTasks().get(details).getValue() <= 1)
+                .filter(cluster -> {
+                    var task = ((AccessorExecutingCraftingJob) ((AccessorCraftingCpuLogic) cluster.craftingLogic).getJob()).getTasks().get(details);
+                    return task != null && task.getValue() <= 1;
+                })
                 .findFirst()
                 .ifPresent(ICraftingCPU::cancelJob);
     }
