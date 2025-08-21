@@ -2,7 +2,6 @@ package lu.kolja.expandedae.mixin;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import lombok.val;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.LoadingModList;
 import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
@@ -41,10 +40,14 @@ public class MixinPlugin implements IMixinConfigPlugin {
                     "lu.kolja.expandedae.mixin.compat.appflux.MixinPatternProviderLogicAppFlux",
                     "lu.kolja.expandedae.mixin.compat.appflux.MixinPatternProviderMenuAppFlux",
                     "lu.kolja.expandedae.mixin.compat.appflux.MixinPatternProviderScreenAppFlux",
+                    "lu.kolja.expandedae.mixin.compat.advancedae.AAEAccessorAdvCraftingCPULogic",
+                    "lu.kolja.expandedae.mixin.compat.advancedae.AAEAccessorExecutingCraftingJob",
+                    "lu.kolja.expandedae.mixin.compat.advancedae.AAEAccessorExecutingCraftingJob.AAEAccessorTaskProgress",
                     "lu.kolja.expandedae.mixin.emi.MixinEmiScreenBase"
             },
             new String[]{
                     "appflux", "appflux", "appflux",
+                    "advancedae", "advancedae", "advancedae",
                     "emi"
             }
     );

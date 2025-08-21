@@ -6,7 +6,6 @@ import appeng.api.crafting.IPatternDetails;
 import appeng.api.implementations.blockentities.ICraftingMachine;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IManagedGridNode;
-import appeng.api.networking.crafting.ICraftingCPU;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.GenericStack;
@@ -19,17 +18,21 @@ import appeng.util.ConfigManager;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import lu.kolja.expandedae.definition.ExpItems;
 import lu.kolja.expandedae.definition.ExpSettings;
+import lu.kolja.expandedae.enums.Addons;
 import lu.kolja.expandedae.enums.BlockingMode;
 import lu.kolja.expandedae.helper.patternprovider.IPatternProviderLogic;
 import lu.kolja.expandedae.helper.patternprovider.PatternProviderTarget;
 import lu.kolja.expandedae.helper.patternprovider.PatternProviderTargetCache;
 import lu.kolja.expandedae.mixin.accessor.AccessorCraftingCpuLogic;
 import lu.kolja.expandedae.mixin.accessor.AccessorExecutingCraftingJob;
+import lu.kolja.expandedae.mixin.compat.advancedae.AAEAccessorAdvCraftingCPULogic;
+import lu.kolja.expandedae.mixin.compat.advancedae.AAEAccessorExecutingCraftingJob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPU;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
@@ -43,6 +46,8 @@ import java.util.Set;
 
 @Mixin(value = PatternProviderLogic.class, remap = false)
 public abstract class MixinPatternProviderLogicAppFlux implements IUpgradeableObject, IPatternProviderLogic {
+    @Unique
+    private static final boolean AAE_LOADED = Addons.ADV.isLoaded();
 
     @Unique
     private PatternProviderTargetCache[] expandedae$targetCaches;
@@ -233,11 +238,25 @@ public abstract class MixinPatternProviderLogicAppFlux implements IUpgradeableOb
     @Unique
     private void expandedae$tryAutoCompleteCraft(IPatternDetails details) {
         if (!getUpgrades().isInstalled(ExpItems.AUTO_COMPLETE_CARD)) return;
-        getGrid().getCraftingService().getCpus().stream()
-                .filter(ICraftingCPU::isBusy)
-                .map(cpu -> (CraftingCPUCluster) cpu)
-                .filter(cluster -> ((AccessorExecutingCraftingJob) ((AccessorCraftingCpuLogic) cluster.craftingLogic).getJob()).getTasks().get(details).getValue() <= 1)
-                .findFirst()
-                .ifPresent(ICraftingCPU::cancelJob);
+        var cpus = getGrid().getCraftingService().getCpus();
+        for (var cpu : cpus) {
+            if (!cpu.isBusy()) continue;
+            if (cpu instanceof CraftingCPUCluster cluster) {
+                var task = ((AccessorExecutingCraftingJob) ((AccessorCraftingCpuLogic) cluster.craftingLogic).getJob()).getTasks().get(details);
+                if (task != null && task.getValue() <= 1) {
+                    cluster.cancelJob();
+                    return;
+                }
+                continue;
+            }
+            if (!AAE_LOADED) continue;
+            if (cpu instanceof AdvCraftingCPU advCpu) {
+                var task = ((AAEAccessorExecutingCraftingJob) ((AAEAccessorAdvCraftingCPULogic) advCpu.craftingLogic).getJob()).getTasks().get(details);
+                if (task != null && task.getValue() <= 1) {
+                    advCpu.cancelJob();
+                    return;
+                }
+            }
+        }
     }
 }
