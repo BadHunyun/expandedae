@@ -234,9 +234,3 @@ reobf {
 }
 
 tasks.jarJar.finalizedBy('reobfJarJar')
-
-sourceSets {
-    main {
-        ext.refMap = "mixins.${mod_id}.refmap.json"
-    }
-}
