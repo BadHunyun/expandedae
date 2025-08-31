@@ -9,9 +9,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "cosmic-frontiers" ]
+    branches: [ "forge/1.20.1" ]
   pull_request:
-    branches: [ "cosmic-frontiers" ]
+    branches: [ "forge/1.20.1" ]
 
 jobs:
   build:
