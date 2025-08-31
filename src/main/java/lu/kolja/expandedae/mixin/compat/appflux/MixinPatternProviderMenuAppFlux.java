@@ -110,8 +110,12 @@ public abstract class MixinPatternProviderMenuAppFlux extends AEBaseMenu impleme
     }
 
     @Inject(
-            method = "broadcastChanges",
-            at = @At("TAIL")
+        method = "broadcastChanges",
+        at = @At(
+            value = "INVOKE",
+            target = "Lappeng/helpers/patternprovider/PatternProviderLogic;getUnlockStack()Lappeng/api/stacks/GenericStack;",
+            remap = false
+        )
     )
     private void broadcastChanges(CallbackInfo ci) {
         eae$blockingMode = logic.getConfigManager().getSetting(ExpSettings.BLOCKING_MODE);
